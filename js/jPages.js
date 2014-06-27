@@ -13,7 +13,7 @@
   var name = "jPages",
       instance = null,
       defaults = {
-        containerID: "",
+        container: "",
         first: false,
         previous: "← previous",
         next: "next →",
@@ -40,12 +40,11 @@
   function Plugin(element, options) {
     this.options = $.extend({}, defaults, options);
 
-    this._container = $("#" + this.options.containerID);
+    this._container = $(this.options.container);
     if (!this._container.length) return;
 
     this.jQwindow = $(window);
     this.jQdocument = $(document);
-
     this._holder = $(element);
     this._nav = {};
 
@@ -54,8 +53,7 @@
     this._next = $(this.options.next);
     this._last = $(this.options.last);
 
-    /* only visible items! */
-    this._items = this._container.children(":visible");
+    this._items = this._container.children();
     this._itemsShowing = $([]);
     this._itemsHiding = $([]);
 
@@ -412,6 +410,7 @@
     updatePages : function(page) {
       var interval, index, nav;
       interval = this.getInterval(page);
+
       for (index in this._nav) {
         if (this._nav.hasOwnProperty(index)) {
           nav = this._nav[index];
